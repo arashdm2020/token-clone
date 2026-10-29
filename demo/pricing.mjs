@@ -18,13 +18,14 @@ export function unsafeSymbolPrice(symbol, symbolPrices) {
 
 // Correct identity matching must use chain ID + contract address.
 export function identityPrice(chainId, address, identityPrices) {
-  return identityPrices[String(chainId) + ':' + address.toLowerCase()] ?? null;
+  return identityPrices[`${chainId}:${address.toLowerCase()}`] ?? null;
 }
 
 if (process.argv[1]?.endsWith('pricing.mjs')) {
   const symbolPrices = { USDT: 1.0 };
-  const identityPrices = {};
-  identityPrices['56:' + sample.official.address.toLowerCase()] = 1.0;
+  const identityPrices = {
+    [`56:${sample.official.address.toLowerCase()}`]: 1.0,
+  };
   console.log('SIMULATION (not a Trust Wallet reverse engineering result)');
   console.log('Unicode normalized:', sample.unrelated.symbol.normalize('NFKC'));
   console.log('Symbol-only pseudo-value for 30 tokens: $', 30 * unsafeSymbolPrice(sample.unrelated.symbol, symbolPrices));
